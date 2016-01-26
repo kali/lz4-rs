@@ -20,7 +20,7 @@ pub struct EncoderBuilder {
 	auto_flush: bool,
 }
 
-pub struct Encoder<W> {
+pub struct Encoder<W: Write> {
 	c: EncoderContext,
 	w: W,
 	limit: usize,
@@ -110,6 +110,7 @@ impl<W: Write> Encoder<W> {
 		self.w.write_all(&self.buffer)
 	}
 
+    /*
 	/// This function is used to flag that this session of compression is done
 	/// with. The stream is finished up (final bytes are written), and then the
 	/// wrapped writer is returned.
@@ -117,6 +118,13 @@ impl<W: Write> Encoder<W> {
 		let result = self.write_end();
 		(self.w, result)
 	}
+    */
+}
+
+impl<W: Write> Drop for Encoder<W> {
+    fn drop(&mut self) {
+        self.write_end();
+    }
 }
 
 impl<W: Write> Write for Encoder<W> {
