@@ -18,7 +18,7 @@ pub struct Decoder<R> {
 	next: usize,
 }
 
-pub unsafe impl<R:Send> Send for Decoder<R> {}
+unsafe impl<R:Send> Send for Decoder<R> {}
 
 impl<R: Read> Decoder<R> {
 	/// Creates a new encoder which will have its output written to the given
